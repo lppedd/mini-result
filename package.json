@@ -1,6 +1,6 @@
 {
   "name": "@lppedd/mini-result",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "description": "Minimal Result type for TypeScript",
   "author": "Edoardo Luppi <lp.edoardo@gmail.com>",

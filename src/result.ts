@@ -1,22 +1,16 @@
 import { Err } from "./err";
 import { Ok } from "./ok";
 
-/**
- * Represents the result of an operation that may succeed (`Ok<V>`) or fail (`Err<E>`).
- *
- * @template V The success value type.
- * @template E The error value type.
- */
-export interface Result<V, E> {
+export interface IResult<V, E> {
   /**
    * Returns `true` if this is an {@link Ok} result.
    */
-  isOk(): this is Ok<V>;
+  isOk(): this is Ok<V, E>;
 
   /**
    * Returns `true` if this is an {@link Err} result.
    */
-  isErr(): this is Err<E>;
+  isErr(): this is Err<V, E>;
 
   /**
    * Transforms the success value if this is an {@link Ok} result,
@@ -44,7 +38,7 @@ export interface Result<V, E> {
    * result.catch((e) => "defaultValue")
    * ```
    */
-  catch<RV = V>(fn: (e: E) => Ok<RV>): Result<V | RV, E>;
+  catch<RV = V>(fn: (e: E) => Ok<RV, E>): Result<V | RV, E>;
 
   /**
    * Replaces the error value with another {@link Err} result.
@@ -54,7 +48,7 @@ export interface Result<V, E> {
    * result.catch((e) => Res.err("response error: ${e.message}"))
    * ```
    */
-  catch<RE = E>(fn: (e: E) => Err<RE>): Result<V, RE>;
+  catch<RE = E>(fn: (e: E) => Err<V, RE>): Result<V, RE>;
 
   /**
    * Replaces the error value with an arbitrary {@link Ok} or {@link Err} result.
@@ -96,7 +90,15 @@ export interface Result<V, E> {
   unwrap(): V;
 }
 
+/**
+ * Represents the result of an operation that may succeed (`Ok<V>`) or fail (`Err<E>`).
+ *
+ * @template V The success value type.
+ * @template E The error value type.
+ */
+export type Result<V, E> = Ok<V, E> | Err<V, E>;
+
 export const Res = {
-  ok: <V>(value: V): Ok<V> => new Ok(value),
-  err: <E>(error: E): Err<E> => new Err(error),
+  ok: <V>(value: V): Ok<V, never> => new Ok(value),
+  err: <E>(error: E): Err<never, E> => new Err(error),
 } as const;

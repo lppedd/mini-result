@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { error } from "./errors";
 import { Ok } from "./ok";
-import type { Result } from "./result";
+import type { IResult, Result } from "./result";
 import { isResult } from "./utils";
 
 /**
@@ -8,7 +10,7 @@ import { isResult } from "./utils";
  *
  * @template E The error value type.
  */
-export class Err<E> implements Result<never, E> {
+export class Err<V, E> implements IResult<V, E> {
   private readonly myError: E;
 
   constructor(error: E) {
@@ -19,36 +21,36 @@ export class Err<E> implements Result<never, E> {
     return this.myError;
   }
 
-  isOk(): this is Ok<never> {
+  isOk(): this is Ok<V, E> {
     return false;
   }
 
-  isErr(): this is Err<E> {
+  isErr(): this is Err<V, E> {
     return true;
   }
 
-  map<RV>(_fn: (v: never) => RV): Result<RV, E> {
-    return this;
+  map<RV>(fn: (v: V) => RV): Result<RV, E> {
+    return this as unknown as Result<RV, E>;
   }
 
-  mapErr<RE>(fn: (e: E) => RE): Result<never, RE> {
+  mapErr<RE>(fn: (e: E) => RE): Result<V, RE> {
     return new Err(fn(this.myError));
   }
 
-  catch<RV>(fn: (e: E) => Ok<RV>): Result<RV, E>;
-  catch<RE>(fn: (e: E) => Err<RE>): Result<never, RE>;
-  catch<RV, RE>(fn: (e: E) => Result<RV, RE>): Result<never | RV, RE>;
+  catch<RV>(fn: (e: E) => Ok<RV, E>): Result<RV, E>;
+  catch<RE>(fn: (e: E) => Err<V, RE>): Result<V, RE>;
+  catch<RV, RE>(fn: (e: E) => Result<RV, RE>): Result<V | RV, RE>;
   catch<RV>(fn: (e: E) => RV): Result<RV, E>;
   catch<RV, RE>(fn: (e: E) => RV | Result<RV, RE>): Result<RV, RE> {
     const v = fn(this.myError);
     return isResult(v) ? v : new Ok(v);
   }
 
-  match<R>(_ok: (v: never) => R, err: (e: E) => R): R {
+  match<R>(ok: (v: V) => R, err: (e: E) => R): R {
     return err(this.myError);
   }
 
-  unwrap(): never {
+  unwrap(): V {
     error("an Err result does not have a value");
   }
 }

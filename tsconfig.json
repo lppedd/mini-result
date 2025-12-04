@@ -7,17 +7,14 @@
     "strict": true,
     "stripInternal": true,
     "esModuleInterop": true,
+    "isolatedModules": true,
     "isolatedDeclarations": true,
     "verbatimModuleSyntax": true,
-    "experimentalDecorators": true,
+    "erasableSyntaxOnly": true,
     "noUncheckedIndexedAccess": true,
     "composite": true,
     "skipLibCheck": true
   },
-  "include": [
-    "."
-  ],
-  "exclude": [
-    "dist"
-  ]
+  "include": ["."],
+  "exclude": ["dist"]
 }

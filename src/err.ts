@@ -29,19 +29,19 @@ export class Err<V, E> implements IResult<V, E> {
     return true;
   }
 
-  map<RV>(fn: (v: V) => RV): Result<RV, E> {
+  map<RV = V>(fn: (v: V) => RV): Result<RV, E> {
     return this as unknown as Result<RV, E>;
   }
 
-  mapErr<RE>(fn: (e: E) => RE): Result<V, RE> {
+  mapErr<RE = E>(fn: (e: E) => RE): Result<V, RE> {
     return new Err(fn(this.myError));
   }
 
-  catch<RV>(fn: (e: E) => Ok<RV, E>): Result<RV, E>;
-  catch<RE>(fn: (e: E) => Err<V, RE>): Result<V, RE>;
-  catch<RV, RE>(fn: (e: E) => Result<RV, RE>): Result<V | RV, RE>;
-  catch<RV>(fn: (e: E) => RV): Result<RV, E>;
-  catch<RV, RE>(fn: (e: E) => RV | Result<RV, RE>): Result<RV, RE> {
+  catch<RV = V>(fn: (e: E) => Ok<RV, E>): Result<V | RV, E>;
+  catch<RE = E>(fn: (e: E) => Err<V, RE>): Result<V, RE>;
+  catch<RV = V, RE = E>(fn: (e: E) => Result<RV, RE>): Result<V | RV, RE>;
+  catch<RV = V>(fn: (e: E) => RV): Result<V | RV, E>;
+  catch<RV = V, RE = E>(fn: (e: E) => RV | Result<RV, RE>): Result<V | RV, RE> {
     const v = fn(this.myError);
     return isResult(v) ? v : new Ok(v);
   }

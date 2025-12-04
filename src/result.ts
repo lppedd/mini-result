@@ -88,6 +88,12 @@ export interface IResult<V, E> {
    * @throws {Error} If this is an {@link Err} result, which does not have a value.
    */
   unwrap(): V;
+
+  /**
+   * Returns the success value, or falls back to the value produced by the given
+   * function if this is an {@link Err} result.
+   */
+  unwrapOr<RV = V>(fn: (e: E) => RV): V | RV;
 }
 
 /**

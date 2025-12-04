@@ -72,16 +72,20 @@ describe("Result", () => {
   });
 
   it("should unwrap an Ok result", () => {
-    const value = Res.ok(20).unwrap();
-    expect(value).toBe(20);
+    const result = Res.ok(20);
+    expect(result.unwrap()).toBe(20);
+    expect(result.unwrapOr(() => "15")).toBe(20);
   });
 
   it("should not unwrap an Err result", () => {
-    expect(() => Res.err(new Error("example cause")).unwrap()).toThrowErrorMatchingInlineSnapshot(
+    const result = Res.err(new Error("example cause"));
+    expect(() => result.unwrap()).toThrowErrorMatchingInlineSnapshot(
       `
       [Error: [mini-result] cannot unwrap an Err result
         [cause] Error: example cause]
       `,
     );
+
+    expect(result.unwrapOr(() => "unwrapped")).toBe("unwrapped");
   });
 });

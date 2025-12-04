@@ -53,4 +53,8 @@ export class Err<V, E> implements IResult<V, E> {
   unwrap(): V {
     error("cannot unwrap an Err result", this.myError);
   }
+
+  unwrapOr<RV = V>(fn: (e: E) => RV): V | RV {
+    return fn(this.myError);
+  }
 }

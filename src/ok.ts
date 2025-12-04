@@ -50,4 +50,8 @@ export class Ok<V, E> implements IResult<V, E> {
   unwrap(): V {
     return this.myValue;
   }
+
+  unwrapOr<RV = V>(fn: (e: E) => RV): V | RV {
+    return this.myValue;
+  }
 }

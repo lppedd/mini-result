@@ -77,8 +77,11 @@ describe("Result", () => {
   });
 
   it("should not unwrap an Err result", () => {
-    expect(() => Res.err("error").unwrap()).toThrowErrorMatchingInlineSnapshot(
-      `[Error: [mini-result] an Err result does not have a value]`,
+    expect(() => Res.err(new Error("example cause")).unwrap()).toThrowErrorMatchingInlineSnapshot(
+      `
+      [Error: [mini-result] cannot unwrap an Err result
+        [cause] Error: example cause]
+      `,
     );
   });
 });

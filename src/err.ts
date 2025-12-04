@@ -51,6 +51,6 @@ export class Err<V, E> implements IResult<V, E> {
   }
 
   unwrap(): V {
-    error("an Err result does not have a value");
+    error("cannot unwrap an Err result", this.myError);
   }
 }

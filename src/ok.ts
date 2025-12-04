@@ -43,7 +43,7 @@ export class Ok<V, E> implements IResult<V, E> {
     return this as unknown as Result<RV, RE>;
   }
 
-  match<R>(ok: (v: V) => R, err: (e: never) => R): R {
+  match<R>(ok: (v: V) => R, err: (e: E) => R): R {
     return ok(this.myValue);
   }
 

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { type AsyncResult, AsyncResultImpl } from "./async";
-import { error } from "./errors";
 import { Ok } from "./ok";
 import { type IResult, type Result, ResultSymbol } from "./result";
 import { isResult, type NoResult } from "./utils";
@@ -74,7 +73,8 @@ export class Err<V, E> implements IResult<V, E> {
   }
 
   unwrap(): V {
-    error("cannot unwrap an Err result", this.myError);
+    const msg = `[mini-result] cannot unwrap an Err result\n  [value] ${String(this.myError)}`;
+    throw new Error(msg, { cause: this.myError });
   }
 
   unwrapOr<RV = V>(fn: (e: E) => RV): V | RV {

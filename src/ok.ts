@@ -32,7 +32,7 @@ export class Ok<V, E> implements IResult<V, E> {
   map<RE = E>(fn: (v: V) => Err<V, RE>): Result<V, E | RE>;
   map<RV = V, RE = E>(fn: (v: V) => Result<RV, RE>): Result<RV, E | RE>;
   map<RV = V>(fn: (v: V) => RV): Result<RV, E>;
-  map<RV = V, RE = E>(fn: (v: V) => RV | Result<RV, RE>): Result<RV, E | RE> {
+  map<RV = V, RE = E>(fn: (v: V) => RV | Result<RV, RE>): Result<V | RV, E | RE> {
     const v = fn(this.myValue);
     return isResult(v) ? v : new Ok(v);
   }

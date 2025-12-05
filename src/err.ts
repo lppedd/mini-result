@@ -41,7 +41,7 @@ export class Err<V, E> implements IResult<V, E> {
   catch<RE = E>(fn: (e: E) => Err<V, RE>): Result<V, RE>;
   catch<RV = V, RE = E>(fn: (e: E) => Result<RV, RE>): Result<V | RV, RE>;
   catch<RV = V>(fn: (e: E) => RV): Result<V | RV, E>;
-  catch<RV = V, RE = E>(fn: (e: E) => RV | Result<RV, RE>): Result<V | RV, RE> {
+  catch<RV = V, RE = E>(fn: (e: E) => RV | Result<RV, RE>): Result<V | RV, E | RE> {
     const v = fn(this.myError);
     return isResult(v) ? v : new Ok(v);
   }

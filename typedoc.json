@@ -1,0 +1,4 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "intentionallyNotExported": ["src/result.ts:IResult", "src/utils.ts:NoResult"]
+}

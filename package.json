@@ -38,7 +38,8 @@
     "build": "tsc --noEmit && bunchee --sourcemap",
     "test": "npm run build && vitest --pool threads --coverage",
     "lint": "eslint . --fix --cache",
-    "lint:ci": "eslint . --max-warnings 0 --cache --cache-location ./node_modules/.cache/eslint/.eslintcache"
+    "lint:ci": "eslint . --max-warnings 0 --cache --cache-location ./node_modules/.cache/eslint/.eslintcache",
+    "typedoc": "typedoc src/index.ts --includeVersion"
   },
   "devDependencies": {
     "@eslint/js": "9.39.1",
@@ -49,6 +50,7 @@
     "eslint": "9.39.1",
     "eslint-plugin-simple-import-sort": "12.1.1",
     "prettier": "3.7.4",
+    "typedoc": "0.28.15",
     "typescript": "5.9.3",
     "typescript-eslint": "8.48.1",
     "vitest": "3.2.4"

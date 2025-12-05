@@ -1,5 +1,6 @@
 import { Err } from "./err";
 import { Ok } from "./ok";
+import type { NoResult } from "./utils";
 
 export interface IResult<V, E> {
   /**
@@ -34,7 +35,7 @@ export interface IResult<V, E> {
    *
    * If this is an {@link Err} result, its error value is preserved unchanged.
    */
-  map<RV = V>(fn: (v: V) => RV): Result<RV, E>;
+  map<RV = V>(fn: (v: V) => NoResult<RV>): Result<RV, E>;
 
   /**
    * Transforms the error value if this is an {@link Err} result, using a function
@@ -59,7 +60,7 @@ export interface IResult<V, E> {
    *
    * If this is an {@link Ok} result, its success value is preserved unchanged.
    */
-  catch<RV = V>(fn: (e: E) => RV): Result<V | RV, E>;
+  catch<RV = V>(fn: (e: E) => NoResult<RV>): Result<V | RV, E>;
 
   /**
    * Exhaustively handles both the {@link Ok} and {@link Err} result variants.

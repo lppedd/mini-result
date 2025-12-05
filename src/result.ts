@@ -29,7 +29,7 @@ export interface IResult<V, E> {
    *
    * Example:
    * ```ts
-   * const r = Res.ok(2).map((v) => v * 3); // Ok(6)
+   * const r = getCores().map((n) => n * 3); // Ok(n * 3)
    * ```
    *
    * If this is an {@link Err} result, its error value is preserved unchanged.
@@ -53,7 +53,6 @@ export interface IResult<V, E> {
    * Replaces the error value with an {@link Ok} result using a raw value.
    *
    * Equivalent to writing:
-   *
    * ```ts
    * result.catch((e) => Res.ok(value))
    * ```

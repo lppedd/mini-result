@@ -46,7 +46,7 @@ export class Err<V, E> implements IResult<V, E> {
     return isResult(v) ? v : new Ok(v);
   }
 
-  match<R>(ok: (v: V) => R, err: (e: E) => R): R {
+  match<RV, RE = RV>(ok: (v: V) => RV, err: (e: E) => RE): RV | RE {
     return err(this.myError);
   }
 

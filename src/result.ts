@@ -80,7 +80,7 @@ export interface IResult<V, E> {
    * @param ok The function called when the result is `Ok`.
    * @param err The function called when the result is `Err`.
    */
-  match<R>(ok: (v: V) => R, err: (e: E) => R): R;
+  match<RV, RE = RV>(ok: (v: V) => RV, err: (e: E) => RE): RV | RE;
 
   /**
    * Returns the success value, or throws if this is an {@link Err} result.

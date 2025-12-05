@@ -58,7 +58,7 @@ describe("Result", () => {
   it("should match both Ok and Err", () => {
     const okValue = Res.ok(1).match(
       (v) => v + 1,
-      () => 12,
+      () => "12",
     );
 
     expect(okValue).toBe(2);

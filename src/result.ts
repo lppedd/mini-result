@@ -1,3 +1,4 @@
+import { type AsyncResult, AsyncResultImpl } from "./async";
 import { Err } from "./err";
 import { Ok } from "./ok";
 import type { NoResult } from "./utils";
@@ -38,6 +39,33 @@ export interface IResult<V, E> {
   map<RV = V>(fn: (v: V) => NoResult<RV>): Result<RV, E>;
 
   /**
+   * Transforms the success value if this is an async {@link Ok} result, using a function
+   * that returns another {@link Result}.
+   *
+   * This method is useful to _flatten_ chained async results.
+   *
+   * If this is an async {@link Err} result, its error value is preserved unchanged.
+   */
+  mapAsync<RV = V>(fn: (v: V) => Promise<Ok<RV, E>>): AsyncResult<RV, E>;
+  mapAsync<RE = E>(fn: (v: V) => Promise<Err<V, RE>>): AsyncResult<V, E | RE>;
+  mapAsync<RV = V, RE = E>(fn: (v: V) => Promise<Result<RV, RE>>): AsyncResult<RV, E | RE>;
+
+  /**
+   * Transforms the success value if this is an async {@link Ok} result, using a raw value.
+   *
+   * Example:
+   * ```ts
+   * // getCores(): Promise<Result<number, Error>
+   * // adjustCores(n): Promise<number>
+   * const r = Res.from(getCores()).mapAsync((n) => adjustCores(n));
+   * // r: AsyncResult<number, Error>
+   * ```
+   *
+   * If this is an {@link Err} result, its error value is preserved unchanged.
+   */
+  mapAsync<RV = V>(fn: (v: V) => NoResult<RV> | Promise<NoResult<RV>>): AsyncResult<RV, E>;
+
+  /**
    * Transforms the error value if this is an {@link Err} result, using a function
    * that returns another {@link Result}.
    *
@@ -61,6 +89,31 @@ export interface IResult<V, E> {
    * If this is an {@link Ok} result, its success value is preserved unchanged.
    */
   catch<RV = V>(fn: (e: E) => NoResult<RV>): Result<V | RV, E>;
+
+  /**
+   * Transforms the error value if this is an async {@link Err} result, using a function
+   * that returns another {@link Result}.
+   *
+   * This method is useful for recovering from failures and _flattening_
+   * chains of async results that operate on errors.
+   *
+   * If this is an async {@link Ok} result, its success value is preserved unchanged.
+   */
+  catchAsync<RV = V>(fn: (e: E) => Promise<Ok<RV, E>>): AsyncResult<V | RV, E>;
+  catchAsync<RE = E>(fn: (e: E) => Promise<Err<V, RE>>): AsyncResult<V, RE>;
+  catchAsync<RV = V, RE = E>(fn: (e: E) => Promise<Result<RV, RE>>): AsyncResult<V | RV, RE>;
+
+  /**
+   * Replaces the error value with an {@link Ok} result using a raw value.
+   *
+   * Equivalent to writing:
+   * ```ts
+   * result.catchAsync((e) => Promise.resolve(Res.ok(value)))
+   * ```
+   *
+   * If this is an async {@link Ok} result, its success value is preserved unchanged.
+   */
+  catchAsync<RV = V>(fn: (e: E) => NoResult<RV> | Promise<NoResult<RV>>): AsyncResult<V | RV, E>;
 
   /**
    * Exhaustively handles both the {@link Ok} and {@link Err} result variants.
@@ -104,4 +157,5 @@ export type Result<V, E> = Ok<V, E> | Err<V, E>;
 export const Res = {
   ok: <V>(value: V): Ok<V, never> => new Ok(value),
   err: <E>(error: E): Err<never, E> => new Err(error),
+  from: <V, E>(promise: Promise<Result<V, E>>): AsyncResult<V, E> => new AsyncResultImpl(promise),
 } as const;

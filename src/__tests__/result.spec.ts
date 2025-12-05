@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from "vitest";
 
-import { Res, type Result } from "../result";
+import { Res, type Result } from "..";
 
 describe("Result", () => {
   it("should be ok", () => {

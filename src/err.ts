@@ -29,12 +29,12 @@ export class Err<V, E> implements IResult<V, E> {
     return true;
   }
 
-  map<RV = V>(fn: (v: V) => RV): Result<RV, E> {
-    return this as unknown as Result<RV, E>;
-  }
-
-  mapErr<RE = E>(fn: (e: E) => RE): Result<V, RE> {
-    return new Err(fn(this.myError));
+  map<RV = V>(fn: (v: V) => Ok<RV, E>): Result<RV, E>;
+  map<RE = E>(fn: (v: V) => Err<V, RE>): Result<V, E | RE>;
+  map<RV = V, RE = E>(fn: (v: V) => Result<RV, RE>): Result<RV, E | RE>;
+  map<RV = V>(fn: (v: V) => RV): Result<RV, E>;
+  map<RV = V, RE = E>(fn: (v: V) => RV | Result<RV, RE>): Result<V | RV, E | RE> {
+    return this;
   }
 
   catch<RV = V>(fn: (e: E) => Ok<RV, E>): Result<V | RV, E>;

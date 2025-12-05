@@ -13,46 +13,40 @@ export interface IResult<V, E> {
   isErr(): this is Err<V, E>;
 
   /**
-   * Transforms the success value if this is an {@link Ok} result,
-   * or leaves the error value unchanged if this is an {@link Err} result.
+   * Transforms the success value if this is an {@link Ok} result, using a function
+   * that returns another {@link Result}.
+   *
+   * This method is useful to _flatten_ chained results.
+   *
+   * If this is an {@link Err} result, its error value is preserved unchanged.
+   */
+  map<RV = V>(fn: (v: V) => Ok<RV, E>): Result<RV, E>;
+  map<RE = E>(fn: (v: V) => Err<V, RE>): Result<V, E | RE>;
+  map<RV = V, RE = E>(fn: (v: V) => Result<RV, RE>): Result<RV, E | RE>;
+
+  /**
+   * Transforms the success value if this is an {@link Ok} result, using a raw value.
+   *
+   * Example:
+   * ```ts
+   * const r = Res.ok(2).map((v) => v * 3); // Ok(6)
+   * ```
+   *
+   * If this is an {@link Err} result, its error value is preserved unchanged.
    */
   map<RV = V>(fn: (v: V) => RV): Result<RV, E>;
 
   /**
-   * Transforms the error value if this is an {@link Err} result,
-   * or leaves the success value unchanged if this is an {@link Ok} result.
-   */
-  mapErr<RE = E>(fn: (e: E) => RE): Result<V, RE>;
-
-  /**
-   * Replaces the error value with an {@link Ok} result.
+   * Transforms the error value if this is an {@link Err} result, using a function
+   * that returns another {@link Result}.
    *
-   * Example:
-   * ```
-   * result.catch((e) => Res.ok("defaultValue"))
-   * ```
+   * This method is useful for recovering_from failures and _flattening_
+   * chains of results that operate on errors.
    *
-   * Equivalent to writing:
-   *
-   * ```ts
-   * result.catch((e) => "defaultValue")
-   * ```
+   * If this is an {@link Ok} result, its success value is preserved unchanged.
    */
   catch<RV = V>(fn: (e: E) => Ok<RV, E>): Result<V | RV, E>;
-
-  /**
-   * Replaces the error value with another {@link Err} result.
-   *
-   * Example:
-   * ```ts
-   * result.catch((e) => Res.err("response error: ${e.message}"))
-   * ```
-   */
   catch<RE = E>(fn: (e: E) => Err<V, RE>): Result<V, RE>;
-
-  /**
-   * Replaces the error value with an arbitrary {@link Ok} or {@link Err} result.
-   */
   catch<RV = V, RE = E>(fn: (e: E) => Result<RV, RE>): Result<V | RV, RE>;
 
   /**
@@ -63,6 +57,8 @@ export interface IResult<V, E> {
    * ```ts
    * result.catch((e) => Res.ok(value))
    * ```
+   *
+   * If this is an {@link Ok} result, its success value is preserved unchanged.
    */
   catch<RV = V>(fn: (e: E) => RV): Result<V | RV, E>;
 

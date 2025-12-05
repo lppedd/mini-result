@@ -26,7 +26,7 @@ describe("Result", () => {
 
     const result = getErrResult()
       .map((v) => v + 1)
-      .mapErr((e) => new Error(`mapped ${e.message}`))
+      .catch((e) => Res.err(new Error(`mapped ${e.message}`)))
       .catch((e) => Res.err(`mapped ${e.message}`))
       .catch((e) => `${e} fallback`);
 
@@ -46,7 +46,34 @@ describe("Result", () => {
       .catch(() => 20)
       .map((v) => v + 1)
       .map((v) => `number: ${v}`)
-      .mapErr((e) => `${e.message} fallback`);
+      .catch((e) => Res.err(`${e.message} fallback`));
+
+    expect(result.isOk()).toBe(true);
+    expect(result.isErr()).toBe(false);
+
+    const value = result.isOk() ? result.value() : undefined;
+    expect(value).toStrictEqual("number: 2");
+  });
+
+  it("should map to result", () => {
+    function getOkResult(): Result<number, Error> {
+      return Res.ok(1);
+    }
+
+    function getAnotherResult(n: number): Result<string, { error: string }> {
+      return Res.ok((n + 1).toString());
+    }
+
+    const result = getOkResult()
+      .map((v) => getAnotherResult(v))
+      .map((v) => `number: ${v}`)
+      .catch((e) => {
+        if (e instanceof Error) {
+          return Res.err(`${e} fallback`);
+        } else {
+          return Res.err(`${e.error} fallback`);
+        }
+      });
 
     expect(result.isOk()).toBe(true);
     expect(result.isErr()).toBe(false);

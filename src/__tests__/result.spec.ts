@@ -5,39 +5,21 @@ import { describe, expect, it } from "vitest";
 import { Res, type Result } from "..";
 
 describe("Result", () => {
-  it("should be ok", () => {
+  it("should be Ok", () => {
     const ok = Res.ok(1);
     expect(ok.isOk()).toBe(true);
     expect(ok.isErr()).toBe(false);
     expect(ok.value()).toBe(1);
   });
 
-  it("should be error", () => {
+  it("should be Err", () => {
     const err = Res.err(new Error("msg"));
     expect(err.isOk()).toBe(false);
     expect(err.isErr()).toBe(true);
     expect(err.error()).toStrictEqual(new Error("msg"));
   });
 
-  it("should map error", () => {
-    function getErrResult(): Result<number, Error> {
-      return Res.err(new Error("msg"));
-    }
-
-    const result = getErrResult()
-      .map((v) => v + 1)
-      .catch((e) => Res.err(new Error(`mapped ${e.message}`)))
-      .catch((e) => Res.err(`mapped ${e.message}`))
-      .catch((e) => `${e} fallback`);
-
-    expect(result.isOk()).toBe(true);
-    expect(result.isErr()).toBe(false);
-
-    const value = result.isOk() ? result.value() : undefined;
-    expect(value).toStrictEqual("mapped mapped msg fallback");
-  });
-
-  it("should map ok", () => {
+  it("should map Ok result", () => {
     function getOkResult(): Result<number, Error> {
       return Res.ok(1);
     }
@@ -55,7 +37,25 @@ describe("Result", () => {
     expect(value).toStrictEqual("number: 2");
   });
 
-  it("should map to result", () => {
+  it("should map Err result", () => {
+    function getErrResult(): Result<number, Error> {
+      return Res.err(new Error("msg"));
+    }
+
+    const result = getErrResult()
+      .map((v) => v + 1)
+      .catch((e) => Res.err(new Error(`mapped ${e.message}`)))
+      .catch((e) => Res.err(`mapped ${e.message}`))
+      .catch((e) => `${e} fallback`);
+
+    expect(result.isOk()).toBe(true);
+    expect(result.isErr()).toBe(false);
+
+    const value = result.isOk() ? result.value() : undefined;
+    expect(value).toStrictEqual("mapped mapped msg fallback");
+  });
+
+  it("should map to another result", () => {
     function getOkResult(): Result<number, Error> {
       return Res.ok(1);
     }

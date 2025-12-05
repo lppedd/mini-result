@@ -133,18 +133,15 @@ export class AsyncResultImpl<V, E> implements AsyncResult<V, E> {
     return new AsyncResultImpl(promise);
   }
 
-  async matchAsync<RV, RE>(ok: (v: V) => RV | Promise<RV>, err: (e: E) => RE | Promise<RE>): Promise<RV | RE> {
-    const result = await this.myPromise;
-    return result.isOk() ? ok(result.unwrap()) : err(result.error());
+  matchAsync<RV, RE>(ok: (v: V) => RV | Promise<RV>, err: (e: E) => RE | Promise<RE>): Promise<RV | RE> {
+    return this.myPromise.then((result) => (result.isOk() ? ok(result.value()) : err(result.error())));
   }
 
-  async unwrapAsync(): Promise<V> {
-    const result = await this.myPromise;
-    return result.unwrap();
+  unwrapAsync(): Promise<V> {
+    return this.myPromise.then((result) => result.unwrap());
   }
 
-  async unwrapOrAsync<RV = V>(fn: (e: E) => RV | Promise<RV>): Promise<V | RV> {
-    const result = await this.myPromise;
-    return result.isOk() ? result.value() : await fn(result.error());
+  unwrapOrAsync<RV = V>(fn: (e: E) => RV | Promise<RV>): Promise<V | RV> {
+    return this.myPromise.then((result) => (result.isOk() ? result.value() : fn(result.error())));
   }
 }

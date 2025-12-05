@@ -1,6 +1,6 @@
 {
   "name": "@lppedd/mini-result",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "license": "MIT",
   "description": "Minimal Result type for TypeScript",
   "author": "Edoardo Luppi <lp.edoardo@gmail.com>",
@@ -14,7 +14,14 @@
   },
   "keywords": [
     "result",
-    "minimal"
+    "minimal",
+    "rust",
+    "throw",
+    "error",
+    "handling",
+    "functional",
+    "typescript",
+    "javascript"
   ],
   "files": [
     "dist"

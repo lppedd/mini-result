@@ -2,7 +2,7 @@
 
 import { type AsyncResult, AsyncResultImpl } from "./async";
 import type { Err } from "./err";
-import type { IResult, Result } from "./result";
+import { type IResult, type Result, ResultSymbol } from "./result";
 import { isResult, type NoResult } from "./utils";
 
 /**
@@ -12,6 +12,11 @@ import { isResult, type NoResult } from "./utils";
  */
 export class Ok<V, E> implements IResult<V, E> {
   private readonly myValue: V;
+
+  /**
+   * @internal
+   */
+  readonly __result: symbol = ResultSymbol;
 
   constructor(value: V) {
     this.myValue = value;

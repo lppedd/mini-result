@@ -3,7 +3,7 @@
 import { type AsyncResult, AsyncResultImpl } from "./async";
 import { error } from "./errors";
 import { Ok } from "./ok";
-import type { IResult, Result } from "./result";
+import { type IResult, type Result, ResultSymbol } from "./result";
 import { isResult, type NoResult } from "./utils";
 
 /**
@@ -13,6 +13,11 @@ import { isResult, type NoResult } from "./utils";
  */
 export class Err<V, E> implements IResult<V, E> {
   private readonly myError: E;
+
+  /**
+   * @internal
+   */
+  readonly __result: symbol = ResultSymbol;
 
   constructor(error: E) {
     this.myError = error;

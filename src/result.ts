@@ -1,9 +1,20 @@
-import { type AsyncResult, AsyncResultImpl } from "./async";
-import { Err } from "./err";
-import { Ok } from "./ok";
+import type { AsyncResult } from "./async";
+import type { Err } from "./err";
+import type { Ok } from "./ok";
 import type { NoResult } from "./utils";
 
+// @internal
+export const ResultSymbol: symbol = Symbol.for("@lppedd/mini-result/Result");
+
+/**
+ * @see Result
+ */
 export interface IResult<V, E> {
+  /**
+   * @internal
+   */
+  readonly __result: typeof ResultSymbol;
+
   /**
    * Returns `true` if this is an {@link Ok} result.
    */
@@ -153,9 +164,3 @@ export interface IResult<V, E> {
  * @template E The error value type.
  */
 export type Result<V, E> = Ok<V, E> | Err<V, E>;
-
-export const Res = {
-  ok: <V>(value: V): Ok<V, never> => new Ok(value),
-  err: <E>(error: E): Err<never, E> => new Err(error),
-  from: <V, E>(promise: Promise<Result<V, E>>): AsyncResult<V, E> => new AsyncResultImpl(promise),
-} as const;

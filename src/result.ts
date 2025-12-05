@@ -41,7 +41,7 @@ export interface IResult<V, E> {
    * Transforms the error value if this is an {@link Err} result, using a function
    * that returns another {@link Result}.
    *
-   * This method is useful for recovering_from failures and _flattening_
+   * This method is useful for recovering from failures and _flattening_
    * chains of results that operate on errors.
    *
    * If this is an {@link Ok} result, its success value is preserved unchanged.
@@ -79,15 +79,16 @@ export interface IResult<V, E> {
   match<RV, RE = RV>(ok: (v: V) => RV, err: (e: E) => RE): RV | RE;
 
   /**
-   * Returns the success value, or throws if this is an {@link Err} result.
+   * Returns the success value if this is an {@link Ok} result, or throws
+   * if this is an {@link Err} result.
    *
    * @throws {Error} If this is an {@link Err} result, which does not have a value.
    */
   unwrap(): V;
 
   /**
-   * Returns the success value, or falls back to the value produced by the given
-   * function if this is an {@link Err} result.
+   * Returns the success value if this is an {@link Ok} result, or falls back
+   * to the value produced by the given function if this is an {@link Err} result.
    */
   unwrapOr<RV = V>(fn: (e: E) => RV): V | RV;
 }

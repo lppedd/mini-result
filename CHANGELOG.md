@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.0
+
+- Refactored internals to further reduce the bundle size.
+- Moved the project status to **Beta**.
+
 ## 0.2.0
 
 - Introduced `Result.tap`, to execute a side effect on a result.

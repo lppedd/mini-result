@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0
+
+- Added support for tapping into the error state via `Result.tap`.
+
+  ```ts
+  result.tap((n) => console.log(n), (e) => console.error(e));
+  ```
+
 ## 0.3.1
 
 - Relaxed compilation target to ES2015.

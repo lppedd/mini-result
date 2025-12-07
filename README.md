@@ -4,7 +4,7 @@
 <div align="center">
 
 [![npm](https://img.shields.io/npm/v/@lppedd/mini-result?color=%23de1f1f&logo=npm)](https://www.npmjs.com/package/@lppedd/mini-result)
-[![ecmascript](https://img.shields.io/badge/ES-2022-blue?logo=javascript)](https://en.wikipedia.org/wiki/ECMAScript_version_history#13th_edition_%E2%80%93_ECMAScript_2022)
+[![ecmascript](https://img.shields.io/badge/ES-2015-blue?logo=javascript)](https://en.wikipedia.org/wiki/ECMAScript_version_history#6th_edition_%E2%80%93_ECMAScript_2015)
 [![status](https://img.shields.io/badge/status-beta-AC29EC)](https://github.com/lppedd/mini-result)
 [![build](https://img.shields.io/github/actions/workflow/status/lppedd/mini-result/test.yml.svg?branch=main)](https://github.com/lppedd/mini-result/actions/workflows/test.yml)
 [![minified size](https://img.shields.io/bundlejs/size/@lppedd/mini-result)](https://bundlejs.com/?q=@lppedd/mini-result)

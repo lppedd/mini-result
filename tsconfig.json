@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "lib": ["ES2022"],
-    "target": "ES2022",
-    "module": "ES2022",
+    "target": "ES2015",
+    "module": "ES2015",
     "moduleResolution": "Bundler",
     "strict": true,
     "stripInternal": true,

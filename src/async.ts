@@ -121,15 +121,15 @@ export class AsyncResultImpl<V, E> implements AsyncResult<V, E> {
   mapAsync<RV = V, RE = E>(
     fn: (v: V) => RV | Promise<RV> | Result<V | RV, E | RE> | Promise<Result<V | RV, E | RE>>,
   ): AsyncResult<V | RV, E | RE> {
-    const promise = this.myPromise
-      .then((result) => (result.isOk() ? Promise.resolve(fn(result.value())) : result))
-      .then((result) => (isResult(result) ? result : new Ok<V | RV, E | RE>(result)));
-    return new AsyncResultImpl(promise);
+    return new AsyncResultImpl(
+      this.myPromise
+        .then((result) => (result.isOk() ? Promise.resolve(fn(result.value())) : result))
+        .then((result) => (isResult(result) ? result : new Ok(result))),
+    );
   }
 
   tapAsync(fn: (v: V) => unknown): AsyncResult<V, E> {
-    const promise = this.myPromise.then((result) => result.tap(fn));
-    return new AsyncResultImpl(promise);
+    return new AsyncResultImpl(this.myPromise.then((result) => result.tap(fn)));
   }
 
   catchAsync<RV = V>(fn: (e: E) => Ok<RV, E> | Promise<Ok<RV, E>>): AsyncResult<V | RV, E>;
@@ -139,10 +139,11 @@ export class AsyncResultImpl<V, E> implements AsyncResult<V, E> {
   catchAsync<RV, RE>(
     fn: (e: E) => RV | Promise<RV> | Result<V | RV, E | RE> | Promise<Result<V | RV, E | RE>>,
   ): AsyncResult<V | RV, E | RE> {
-    const promise = this.myPromise
-      .then((result) => (result.isErr() ? Promise.resolve(fn(result.error())) : result))
-      .then((result) => (isResult(result) ? result : new Ok<V | RV, E | RE>(result)));
-    return new AsyncResultImpl(promise);
+    return new AsyncResultImpl(
+      this.myPromise
+        .then((result) => (result.isErr() ? Promise.resolve(fn(result.error())) : result))
+        .then((result) => (isResult(result) ? result : new Ok(result))),
+    );
   }
 
   matchAsync<RV, RE>(ok: (v: V) => RV | Promise<RV>, err: (e: E) => RE | Promise<RE>): Promise<RV | RE> {

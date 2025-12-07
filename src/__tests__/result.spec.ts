@@ -82,28 +82,32 @@ describe("Result", () => {
     expect(value).toStrictEqual("number: 2");
   });
 
-  it("should tap result", () => {
-    const fn = vi.fn();
+  it("should tap Ok result", () => {
+    const fnv = vi.fn();
+    const fne = vi.fn();
     const value = Res.ok(1)
       .map((v) => v + 1)
-      .tap(fn)
+      .tap(fnv, fne)
       .map((v) => v + 1)
       .unwrap();
 
-    expect(fn).toHaveBeenCalledExactlyOnceWith(2);
+    expect(fnv).toHaveBeenCalledExactlyOnceWith(2);
+    expect(fne).not.toHaveBeenCalled();
     expect(value).toBe(3);
   });
 
-  it("should skip tap when Err result", () => {
-    const fn = vi.fn();
+  it("should tap Err result", () => {
+    const fnv = vi.fn();
+    const fne = vi.fn();
     const result = Res.ok(1)
       .map((v) => v + 1)
       .map((v) => Res.err(`error for ${v}`))
-      .tap(fn)
+      .tap(fnv, fne)
       .map((v) => v + 1);
 
     expect(result.isErr()).toBe(true);
-    expect(fn).not.toHaveBeenCalled();
+    expect(fnv).not.toHaveBeenCalled();
+    expect(fne).toHaveBeenCalledExactlyOnceWith("error for 2");
   });
 
   it("should match both Ok and Err", () => {

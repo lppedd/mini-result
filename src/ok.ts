@@ -47,8 +47,8 @@ export class Ok<V, E> implements IResult<V, E> {
     return new AsyncResultImpl(Promise.resolve(fn(this.value)).then((v) => (isResult(v) ? v : new Ok(v))));
   }
 
-  tap(fn: (v: V) => unknown): Result<V, E> {
-    fn(this.value);
+  tap(fnv: ((v: V) => unknown) | undefined, fne?: (e: E) => unknown): Result<V, E> {
+    fnv?.(this.value);
     return this;
   }
 

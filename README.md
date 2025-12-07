@@ -67,11 +67,12 @@ const r = result.map((n) => compute(n)); // () => Result<number, Error>
 
 ### Result.tap
 
-Invokes a function with the result's success value. No-op if the result represents an error state.
+Invokes a function with the result's success value if the result represents a success state,
+or with the error value if it represents an error state.
 
 ```ts
 // result: Result<number, Error>
-const r = result.tap((n) => console.log(n));
+const r = result.tap((n) => console.log(n), (e) => console.error(e));
 ```
 
 ### Result.catch

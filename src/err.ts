@@ -46,7 +46,8 @@ export class Err<V, E> implements IResult<V, E> {
     return new AsyncResultImpl(Promise.resolve(this));
   }
 
-  tap(fn: (v: V) => unknown): Result<V, E> {
+  tap(fn: ((v: V) => unknown) | undefined, fne?: (e: E) => unknown): Result<V, E> {
+    fne?.(this.error);
     return this;
   }
 

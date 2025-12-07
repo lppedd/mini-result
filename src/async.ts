@@ -104,14 +104,14 @@ export interface AsyncResult<V, E> {
 
 // @internal
 export class AsyncResultImpl<V, E> implements AsyncResult<V, E> {
-  private readonly myPromise: Promise<Result<V, E>>;
+  private readonly promise: Promise<Result<V, E>>;
 
   constructor(promise: Promise<Result<V, E>>) {
-    this.myPromise = promise;
+    this.promise = promise;
   }
 
   get(): Promise<Result<V, E>> {
-    return this.myPromise;
+    return this.promise;
   }
 
   mapAsync<RV = V>(fn: (v: V) => Ok<RV, E> | Promise<Ok<RV, E>>): AsyncResult<RV, E>;
@@ -122,14 +122,14 @@ export class AsyncResultImpl<V, E> implements AsyncResult<V, E> {
     fn: (v: V) => RV | Promise<RV> | Result<V | RV, E | RE> | Promise<Result<V | RV, E | RE>>,
   ): AsyncResult<V | RV, E | RE> {
     return new AsyncResultImpl(
-      this.myPromise
-        .then((result) => (result.isOk() ? Promise.resolve(fn(result.value())) : result))
+      this.promise
+        .then((result) => (result.isOk() ? Promise.resolve(fn(result.value)) : result))
         .then((result) => (isResult(result) ? result : new Ok(result))),
     );
   }
 
   tapAsync(fn: (v: V) => unknown): AsyncResult<V, E> {
-    return new AsyncResultImpl(this.myPromise.then((result) => result.tap(fn)));
+    return new AsyncResultImpl(this.promise.then((result) => result.tap(fn)));
   }
 
   catchAsync<RV = V>(fn: (e: E) => Ok<RV, E> | Promise<Ok<RV, E>>): AsyncResult<V | RV, E>;
@@ -140,21 +140,21 @@ export class AsyncResultImpl<V, E> implements AsyncResult<V, E> {
     fn: (e: E) => RV | Promise<RV> | Result<V | RV, E | RE> | Promise<Result<V | RV, E | RE>>,
   ): AsyncResult<V | RV, E | RE> {
     return new AsyncResultImpl(
-      this.myPromise
-        .then((result) => (result.isErr() ? Promise.resolve(fn(result.error())) : result))
+      this.promise
+        .then((result) => (result.isErr() ? Promise.resolve(fn(result.error)) : result))
         .then((result) => (isResult(result) ? result : new Ok(result))),
     );
   }
 
   matchAsync<RV, RE>(ok: (v: V) => RV | Promise<RV>, err: (e: E) => RE | Promise<RE>): Promise<RV | RE> {
-    return this.myPromise.then((result) => (result.isOk() ? ok(result.value()) : err(result.error())));
+    return this.promise.then((result) => (result.isOk() ? ok(result.value) : err(result.error)));
   }
 
   unwrapAsync(): Promise<V> {
-    return this.myPromise.then((result) => result.unwrap());
+    return this.promise.then((result) => result.unwrap());
   }
 
   unwrapOrAsync<RV = V>(fn: (e: E) => RV | Promise<RV>): Promise<V | RV> {
-    return this.myPromise.then((result) => (result.isOk() ? result.value() : fn(result.error())));
+    return this.promise.then((result) => (result.isOk() ? result.value : fn(result.error)));
   }
 }

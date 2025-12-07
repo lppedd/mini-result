@@ -9,14 +9,14 @@ describe("Result", () => {
     const ok = Res.ok(1);
     expect(ok.isOk()).toBe(true);
     expect(ok.isErr()).toBe(false);
-    expect(ok.value()).toBe(1);
+    expect(ok.value).toBe(1);
   });
 
   it("should be Err", () => {
     const err = Res.err(new Error("msg"));
     expect(err.isOk()).toBe(false);
     expect(err.isErr()).toBe(true);
-    expect(err.error()).toStrictEqual(new Error("msg"));
+    expect(err.error).toStrictEqual(new Error("msg"));
   });
 
   it("should map Ok result", () => {
@@ -33,7 +33,7 @@ describe("Result", () => {
     expect(result.isOk()).toBe(true);
     expect(result.isErr()).toBe(false);
 
-    const value = result.isOk() ? result.value() : undefined;
+    const value = result.isOk() ? result.value : undefined;
     expect(value).toStrictEqual("number: 2");
   });
 
@@ -51,7 +51,7 @@ describe("Result", () => {
     expect(result.isOk()).toBe(true);
     expect(result.isErr()).toBe(false);
 
-    const value = result.isOk() ? result.value() : undefined;
+    const value = result.isOk() ? result.value : undefined;
     expect(value).toStrictEqual("mapped mapped msg fallback");
   });
 
@@ -78,7 +78,7 @@ describe("Result", () => {
     expect(result.isOk()).toBe(true);
     expect(result.isErr()).toBe(false);
 
-    const value = result.isOk() ? result.value() : undefined;
+    const value = result.isOk() ? result.value : undefined;
     expect(value).toStrictEqual("number: 2");
   });
 

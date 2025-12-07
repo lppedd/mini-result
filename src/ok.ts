@@ -11,7 +11,7 @@ import { isResult, type NoResult } from "./utils";
  * @template V The success value type.
  */
 export class Ok<V, E> implements IResult<V, E> {
-  private readonly myValue: V;
+  readonly value: V;
 
   /**
    * @internal
@@ -19,11 +19,7 @@ export class Ok<V, E> implements IResult<V, E> {
   readonly __result: symbol = ResultSymbol;
 
   constructor(value: V) {
-    this.myValue = value;
-  }
-
-  value(): V {
-    return this.myValue;
+    this.value = value;
   }
 
   isOk(): this is Ok<V, E> {
@@ -39,7 +35,7 @@ export class Ok<V, E> implements IResult<V, E> {
   map<RV = V, RE = E>(fn: (v: V) => Result<RV, RE>): Result<RV, E | RE>;
   map<RV = V>(fn: (v: V) => NoResult<RV>): Result<RV, E>;
   map<RV = V, RE = E>(fn: (v: V) => RV | Result<RV, RE>): Result<V | RV, E | RE> {
-    const value = fn(this.myValue);
+    const value = fn(this.value);
     return isResult(value) ? value : new Ok(value);
   }
 
@@ -48,12 +44,11 @@ export class Ok<V, E> implements IResult<V, E> {
   mapAsync<RV = V, RE = E>(fn: (v: V) => Promise<Result<RV, RE>>): AsyncResult<RV, E | RE>;
   mapAsync<RV = V>(fn: (v: V) => NoResult<RV> | Promise<NoResult<RV>>): AsyncResult<RV, E>;
   mapAsync<RV = V, RE = E>(fn: (v: V) => RV | Promise<RV> | Promise<Result<V | RV, E | RE>>): AsyncResult<V | RV, E | RE> {
-    const value = fn(this.myValue);
-    return new AsyncResultImpl(Promise.resolve(value).then((v) => (isResult(v) ? v : new Ok(v))));
+    return new AsyncResultImpl(Promise.resolve(fn(this.value)).then((v) => (isResult(v) ? v : new Ok(v))));
   }
 
   tap(fn: (v: V) => unknown): Result<V, E> {
-    fn(this.myValue);
+    fn(this.value);
     return this;
   }
 
@@ -74,14 +69,14 @@ export class Ok<V, E> implements IResult<V, E> {
   }
 
   match<RV, RE = RV>(ok: (v: V) => RV, err: (e: E) => RE): RV | RE {
-    return ok(this.myValue);
+    return ok(this.value);
   }
 
   unwrap(): V {
-    return this.myValue;
+    return this.value;
   }
 
   unwrapOr<RV = V>(fn: (e: E) => RV): V | RV {
-    return this.myValue;
+    return this.value;
   }
 }

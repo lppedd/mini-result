@@ -11,7 +11,7 @@ import { isResult, type NoResult } from "./utils";
  * @template E The error value type.
  */
 export class Err<V, E> implements IResult<V, E> {
-  private readonly myError: E;
+  readonly error: E;
 
   /**
    * @internal
@@ -19,11 +19,7 @@ export class Err<V, E> implements IResult<V, E> {
   readonly __result: symbol = ResultSymbol;
 
   constructor(error: E) {
-    this.myError = error;
-  }
-
-  error(): E {
-    return this.myError;
+    this.error = error;
   }
 
   isOk(): this is Ok<V, E> {
@@ -59,7 +55,7 @@ export class Err<V, E> implements IResult<V, E> {
   catch<RV = V, RE = E>(fn: (e: E) => Result<RV, RE>): Result<V | RV, RE>;
   catch<RV = V>(fn: (e: E) => NoResult<RV>): Result<V | RV, E>;
   catch<RV = V, RE = E>(fn: (e: E) => RV | Result<RV, RE>): Result<V | RV, E | RE> {
-    const value = fn(this.myError);
+    const value = fn(this.error);
     return isResult(value) ? value : new Ok(value);
   }
 
@@ -68,20 +64,20 @@ export class Err<V, E> implements IResult<V, E> {
   catchAsync<RV = V, RE = E>(fn: (e: E) => Promise<Result<RV, RE>>): AsyncResult<V | RV, RE>;
   catchAsync<RV = V>(fn: (e: E) => NoResult<RV> | Promise<NoResult<RV>>): AsyncResult<V | RV, E>;
   catchAsync<RV = V, RE = E>(fn: (e: E) => RV | Promise<RV> | Promise<Result<V | RV, E | RE>>): AsyncResult<V | RV, E | RE> {
-    const value = fn(this.myError);
-    return new AsyncResultImpl(Promise.resolve(value).then((v) => (isResult(v) ? v : new Ok(v))));
+    return new AsyncResultImpl(Promise.resolve(fn(this.error)).then((v) => (isResult(v) ? v : new Ok(v))));
   }
 
   match<RV, RE = RV>(ok: (v: V) => RV, err: (e: E) => RE): RV | RE {
-    return err(this.myError);
+    return err(this.error);
   }
 
   unwrap(): V {
-    const msg = `[mini-result] cannot unwrap an Err result\n  [value] ${String(this.myError)}`;
-    throw new Error(msg, { cause: this.myError });
+    throw new Error(`[mini-result] cannot unwrap an Err result\n  [value] ${String(this.error)}`, {
+      cause: this.error,
+    });
   }
 
   unwrapOr<RV = V>(fn: (e: E) => RV): V | RV {
-    return fn(this.myError);
+    return fn(this.error);
   }
 }

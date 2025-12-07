@@ -51,7 +51,7 @@ But let's start with creating an `Ok` or `Err` result.
 import { Res } from "@lppedd/mini-result";
 
 const ok = Res.ok(1);        // Ok<number, never>
-const er = Res.err("error"); // Err<never, string>,
+const er = Res.err("error"); // Err<never, string>
 ```
 
 ### Result.map

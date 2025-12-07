@@ -40,7 +40,7 @@ yarn add @lppedd/mini-result
 
 ## Operations
 
-Fundamentally, `Result` offers only **4** operations: `map`, `catch`, `unwrap` and `unwrapOr`.  
+Fundamentally, `Result` offers only **5** operations: `map`, `tap`, `catch`, `unwrap` and `unwrapOr`.  
 Those operations are also split into **synchronous** and **asynchronous** (suffixed with `*Async`) variants.
 
 But let's start with creating an `Ok` or `Err` result.
@@ -62,6 +62,15 @@ Transforms the result's success value. No-op if the result represents an error s
 // result: Result<number, Error>
 const r = result.map((n) => n + 1);
 const r = result.map((n) => compute(n)); // () => Result<number, Error>
+```
+
+### Result.tap
+
+Invokes a function with the result's success value. No-op if the result represents an error state.
+
+```ts
+// result: Result<number, Error>
+const r = result.tap((n) => console.log(n));
 ```
 
 ### Result.catch

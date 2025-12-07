@@ -77,6 +77,13 @@ export interface IResult<V, E> {
   mapAsync<RV = V>(fn: (v: V) => NoResult<RV> | Promise<NoResult<RV>>): AsyncResult<RV, E>;
 
   /**
+   * Invokes the given function with the success value if this is an {@link Ok} result.
+   *
+   * The result is returned unchanged.
+   */
+  tap(fn: (v: V) => unknown): Result<V, E>;
+
+  /**
    * Transforms the error value if this is an {@link Err} result, using a function
    * that returns another {@link Result}.
    *

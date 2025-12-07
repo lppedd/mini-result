@@ -40,6 +40,13 @@ export interface AsyncResult<V, E> {
   mapAsync<RV = V>(fn: (v: V) => NoResult<RV> | Promise<NoResult<RV>>): AsyncResult<RV, E>;
 
   /**
+   * Invokes the given function with the success value if this is an async {@link Ok} result.
+   *
+   * The result is returned unchanged.
+   */
+  tapAsync(fn: (v: V) => unknown): AsyncResult<V, E>;
+
+  /**
    * Transforms the error value if this is an async {@link Err} result, using a function
    * that returns another {@link Result}.
    *
@@ -117,6 +124,11 @@ export class AsyncResultImpl<V, E> implements AsyncResult<V, E> {
     const promise = this.myPromise
       .then((result) => (result.isOk() ? Promise.resolve(fn(result.value())) : result))
       .then((result) => (isResult(result) ? result : new Ok<V | RV, E | RE>(result)));
+    return new AsyncResultImpl(promise);
+  }
+
+  tapAsync(fn: (v: V) => unknown): AsyncResult<V, E> {
+    const promise = this.myPromise.then((result) => result.tap(fn));
     return new AsyncResultImpl(promise);
   }
 

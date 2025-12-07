@@ -50,6 +50,10 @@ export class Err<V, E> implements IResult<V, E> {
     return new AsyncResultImpl(Promise.resolve(this));
   }
 
+  tap(fn: (v: V) => unknown): Result<V, E> {
+    return this;
+  }
+
   catch<RV = V>(fn: (e: E) => Ok<RV, E>): Result<V | RV, E>;
   catch<RE = E>(fn: (e: E) => Err<V, RE>): Result<V, RE>;
   catch<RV = V, RE = E>(fn: (e: E) => Result<RV, RE>): Result<V | RV, RE>;

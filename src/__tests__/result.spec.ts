@@ -1,6 +1,6 @@
 // noinspection GrazieInspection
 
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { Res, type Result } from "..";
 
@@ -80,6 +80,30 @@ describe("Result", () => {
 
     const value = result.isOk() ? result.value() : undefined;
     expect(value).toStrictEqual("number: 2");
+  });
+
+  it("should tap result", () => {
+    const fn = vi.fn();
+    const value = Res.ok(1)
+      .map((v) => v + 1)
+      .tap(fn)
+      .map((v) => v + 1)
+      .unwrap();
+
+    expect(fn).toHaveBeenCalledExactlyOnceWith(2);
+    expect(value).toBe(3);
+  });
+
+  it("should skip tap when Err result", () => {
+    const fn = vi.fn();
+    const result = Res.ok(1)
+      .map((v) => v + 1)
+      .map((v) => Res.err(`error for ${v}`))
+      .tap(fn)
+      .map((v) => v + 1);
+
+    expect(result.isErr()).toBe(true);
+    expect(fn).not.toHaveBeenCalled();
   });
 
   it("should match both Ok and Err", () => {

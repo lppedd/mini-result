@@ -1,6 +1,6 @@
 // noinspection GrazieInspection
 
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { type Err, Res, type Result } from "..";
 
@@ -85,6 +85,18 @@ describe("AsyncResult", () => {
         [value] Error: msg. Caught]
       `,
     );
+  });
+
+  it("should tap async result", async () => {
+    const fn = vi.fn();
+    const value = Res.ok(1)
+      .mapAsync((v) => Promise.resolve(v + 1))
+      .tapAsync(fn)
+      .mapAsync((v) => v + 1)
+      .unwrapAsync();
+
+    await expect(value).resolves.toBe(3);
+    expect(fn).toHaveBeenCalledExactlyOnceWith(2);
   });
 
   it("should catch Ok result to async", async () => {

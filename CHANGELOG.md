@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1
+
+- Relaxed compilation target to ES2015.
+
 ## 0.3.0
 
 - Refactored internals to further reduce the bundle size.

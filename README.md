@@ -23,7 +23,10 @@
 
 However, unlike these libraries, **mini-result** intentionally focuses on minimalism.
 Rather than looking for features, tree-shakability or performance, it aims to provide a tiny
-and easy-to-understand `Result` type with just the essentials needed for practical error handling.
+and easy-to-understand `Result` type with just the essentials needed for practical error handling,
+which also includes **async** support.
+
+The minified package currently sits at around `0.5 kB`, and no further API additions are planned.
 
 ## Installation
 
@@ -89,7 +92,7 @@ const r = result.catch((e) => defaultValue);
 // Or
 const r = result.catch((e) => Res.ok(defaultValue));
 
-// Replaces the error value with a new result (which might be a success or error itself)
+// Replace the error value with a new result (which might be a success or error itself)
 const r = result.catch((e) => computeDefault()); // (e) => Result<number, Error>
 ```
 

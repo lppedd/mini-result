@@ -17,7 +17,7 @@
 
 **mini-result** is inspired by existing `Result`-type libraries such as:
 
-- [neverthrow](https://github.com/sindresorhus/neverthrow)
+- [neverthrow](https://github.com/supermacro/neverthrow)
 - [byethrow](https://github.com/praha-inc/byethrow)
 - [ts-result](https://github.com/trylonai/ts-result)
 

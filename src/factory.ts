@@ -20,16 +20,13 @@ export const Res = {
       return new Err(e);
     }
   },
-  wrapAsync: <V>(fn: () => Promise<V> | V): AsyncResult<V, unknown> => {
-    try {
-      return new AsyncResultImpl(
-        Promise.resolve(fn()).then(
+  wrapAsync: <V>(fn: () => Promise<V> | V): AsyncResult<V, unknown> =>
+    new AsyncResultImpl(
+      Promise.resolve()
+        .then(fn)
+        .then(
           (v) => new Ok(v),
           (e) => new Err(e),
         ),
-      );
-    } catch (e) {
-      return new AsyncResultImpl(Promise.resolve(new Err(e)));
-    }
-  },
+    ),
 } as const;

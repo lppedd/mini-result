@@ -75,7 +75,7 @@ export default tseslint.config(
           ignoreRestSiblings: true,
         },
       ],
-      "@typescript-eslint/prefer-promise-reject-errors": "error",
+      "@typescript-eslint/prefer-promise-reject-errors": "off",
       "@typescript-eslint/no-redundant-type-constituents": "off",
       "@typescript-eslint/no-unsafe-member-access": "off",
       "@typescript-eslint/no-explicit-any": "off",

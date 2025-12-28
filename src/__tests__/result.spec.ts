@@ -137,7 +137,7 @@ describe("Result", () => {
     expect(() => result.unwrap()).toThrowErrorMatchingInlineSnapshot(
       `
       [Error: [mini-result] cannot unwrap an Err result
-        [value] Error: example cause]
+        [cause] Error: example cause]
       `,
     );
 

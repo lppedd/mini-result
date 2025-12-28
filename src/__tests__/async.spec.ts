@@ -20,7 +20,7 @@ describe("AsyncResult", () => {
     await expect(asyncOk.unwrapAsync()).rejects.toThrowErrorMatchingInlineSnapshot(
       `
       [Error: [mini-result] cannot unwrap an Err result
-        [value] Error: msg]
+        [cause] Error: msg]
       `,
     );
 
@@ -30,7 +30,7 @@ describe("AsyncResult", () => {
     expect(() => ok.unwrap()).toThrowErrorMatchingInlineSnapshot(
       `
       [Error: [mini-result] cannot unwrap an Err result
-        [value] Error: msg]
+        [cause] Error: msg]
       `,
     );
   });
@@ -59,7 +59,7 @@ describe("AsyncResult", () => {
     await expect(() => result.unwrapAsync()).rejects.toThrowErrorMatchingInlineSnapshot(
       `
       [Error: [mini-result] cannot unwrap an Err result
-        [value] error for number: 3. Caught]
+        [cause] error for number: 3. Caught]
       `,
     );
   });
@@ -82,7 +82,7 @@ describe("AsyncResult", () => {
     await expect(() => result.unwrapAsync()).rejects.toThrowErrorMatchingInlineSnapshot(
       `
       [Error: [mini-result] cannot unwrap an Err result
-        [value] Error: msg. Caught]
+        [cause] Error: msg. Caught]
       `,
     );
   });

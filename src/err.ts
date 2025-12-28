@@ -73,7 +73,7 @@ export class Err<V, E> implements IResult<V, E> {
   }
 
   unwrap(): V {
-    throw new Error(`[mini-result] cannot unwrap an Err result\n  [value] ${String(this.error)}`, {
+    throw new Error(`[mini-result] cannot unwrap an Err result\n  [cause] ${String(this.error)}`, {
       cause: this.error,
     });
   }

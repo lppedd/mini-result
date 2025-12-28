@@ -137,4 +137,29 @@ describe("AsyncResult", () => {
 
     expect(errValue).toBe(3);
   });
+
+  it("should wrap an async function call", async () => {
+    function numberAsync(): Promise<number> {
+      return Promise.resolve(20);
+    }
+
+    const okAsync = Res.wrapAsync(numberAsync);
+    const ok = await okAsync.get();
+    expect(ok.isOk()).toBe(true);
+    expect(ok.unwrap()).toBe(20);
+
+    function numberOrThrow(): Promise<number> {
+      throw new Error("example");
+    }
+
+    const errAsync = Res.wrapAsync(numberOrThrow);
+    const err = await errAsync.get();
+    expect(err.isErr()).toBe(true);
+    expect(() => err.unwrap()).toThrowErrorMatchingInlineSnapshot(
+      `
+      [Error: [mini-result] cannot unwrap an Err result
+        [cause] Error: example]
+      `,
+    );
+  });
 });

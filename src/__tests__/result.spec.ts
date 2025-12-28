@@ -143,4 +143,20 @@ describe("Result", () => {
 
     expect(result.unwrapOr(() => "unwrapped")).toBe("unwrapped");
   });
+
+  it("should wrap a function call", () => {
+    const ok = Res.wrap(() => 20);
+    expect(ok.isOk()).toBe(true);
+
+    function numberOrThrow(): number {
+      throw new Error("example");
+    }
+
+    const err = Res.wrap(numberOrThrow);
+    expect(err.isErr()).toBe(true);
+
+    if (err.isErr()) {
+      expect(err.error).toEqual(new Error("example"));
+    }
+  });
 });

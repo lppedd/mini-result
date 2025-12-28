@@ -9,5 +9,5 @@ import type { Result } from "./result";
 export const Res = {
   ok: <V>(value: V): Ok<V, never> => new Ok(value),
   err: <E>(error: E): Err<never, E> => new Err(error),
-  from: <V, E>(promise: Promise<Result<V, E>>): AsyncResult<V, E> => new AsyncResultImpl(promise),
+  async: <V, E>(promise: Promise<Result<V, E>>): AsyncResult<V, E> => new AsyncResultImpl(promise),
 } as const;

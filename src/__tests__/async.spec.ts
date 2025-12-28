@@ -6,7 +6,7 @@ import { type Err, Res, type Result } from "..";
 
 describe("AsyncResult", () => {
   it("should be ok", async () => {
-    const asyncOk = Res.from(Promise.resolve(Res.ok(1)));
+    const asyncOk = Res.async(Promise.resolve(Res.ok(1)));
     await expect(asyncOk.unwrapAsync()).resolves.toBe(1);
 
     const ok = await asyncOk.get();
@@ -16,7 +16,7 @@ describe("AsyncResult", () => {
   });
 
   it("should be error", async () => {
-    const asyncOk = Res.from(Promise.resolve(Res.err(new Error("msg"))));
+    const asyncOk = Res.async(Promise.resolve(Res.err(new Error("msg"))));
     await expect(asyncOk.unwrapAsync()).rejects.toThrowErrorMatchingInlineSnapshot(
       `
       [Error: [mini-result] cannot unwrap an Err result
@@ -36,11 +36,11 @@ describe("AsyncResult", () => {
   });
 
   it("should unwrap or call async function", async () => {
-    const asyncOk = Res.from(Promise.resolve(Res.ok(2)));
+    const asyncOk = Res.async(Promise.resolve(Res.ok(2)));
     const num = await asyncOk.unwrapOrAsync(() => "15");
     expect(num).toBe(2);
 
-    const asyncErr = Res.from(Promise.resolve(Res.err(new Error("msg"))));
+    const asyncErr = Res.async(Promise.resolve(Res.err(new Error("msg"))));
     const str = await asyncErr.unwrapOrAsync(() => Promise.resolve("15"));
     expect(str).toBe("15");
   });
@@ -121,7 +121,7 @@ describe("AsyncResult", () => {
   });
 
   it("should match both async Ok and Err", async () => {
-    const asyncOk = Res.from(Promise.resolve(Res.ok(1)));
+    const asyncOk = Res.async(Promise.resolve(Res.ok(1)));
     const okValue = await asyncOk.matchAsync(
       (v) => v + 1,
       () => "12",
@@ -129,7 +129,7 @@ describe("AsyncResult", () => {
 
     expect(okValue).toBe(2);
 
-    const asyncErr = Res.from(Promise.resolve(Res.err(2)));
+    const asyncErr = Res.async(Promise.resolve(Res.err(2)));
     const errValue = await asyncErr.matchAsync(
       () => 1,
       (e) => e + 1,

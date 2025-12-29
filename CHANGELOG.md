@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0
+
+- ❗ Renamed `Res.from` to `Res.async` to better reflect its purpose.
+- Added `Res.wrap` for wrapping **synchronous** function calls into a `Result`.
+- Added `Res.wrapAsync` for wrapping **asynchronous** function calls into a `Result`.
+
 ## 0.4.0
 
 - Added support for tapping into the error state via `Result.tap`.

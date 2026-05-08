@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.1
+
+- Exported the `ResultPromise<V, E>` type as a convenience alias for `Promise<Result<V, E>>`.
+
 ## 0.5.0
 
 - ❗ Renamed `Res.from` to `Res.async` to better reflect its purpose.

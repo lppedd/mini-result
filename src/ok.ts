@@ -11,6 +11,9 @@ import { isResult, type NoResult } from "./utils";
  * @template V The success value type.
  */
 export class Ok<V, E> implements IResult<V, E> {
+  /**
+   * The underlying success value, also returned by {@link unwrap}.
+   */
   readonly value: V;
 
   /**

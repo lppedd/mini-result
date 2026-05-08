@@ -11,6 +11,9 @@ import { isResult, type NoResult } from "./utils";
  * @template E The error value type.
  */
 export class Err<V, E> implements IResult<V, E> {
+  /**
+   * The underlying error value.
+   */
   readonly error: E;
 
   /**

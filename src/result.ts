@@ -172,3 +172,11 @@ export interface IResult<V, E> {
  * @template E The error value type.
  */
 export type Result<V, E> = Ok<V, E> | Err<V, E>;
+
+/**
+ * A promise that resolves to the result of an operation that may succeed (`Ok<V>`) or fail (`Err<E>`).
+ *
+ * @template V The success value type.
+ * @template E The error value type.
+ */
+export type ResultPromise<V, E> = Promise<Result<V, E>>;

@@ -53,7 +53,7 @@
     "@types/node": "22.19.3",
     "@vitest/coverage-v8": "3.2.4",
     "@vitest/ui": "3.2.4",
-    "bunchee": "6.8.2",
+    "bunchee": "6.10.0",
     "eslint": "9.39.2",
     "eslint-plugin-simple-import-sort": "12.1.1",
     "prettier": "3.8.3",

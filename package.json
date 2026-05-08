@@ -56,7 +56,7 @@
     "bunchee": "6.8.2",
     "eslint": "9.39.2",
     "eslint-plugin-simple-import-sort": "12.1.1",
-    "prettier": "3.7.4",
+    "prettier": "3.8.3",
     "typedoc": "0.28.19",
     "typescript": "5.9.3",
     "typescript-eslint": "8.50.1",

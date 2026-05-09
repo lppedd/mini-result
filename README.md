@@ -1,6 +1,6 @@
 <!--suppress HtmlDeprecatedAttribute -->
 <h1 align="center">mini-result</h1>
-<p align="center">Minimal Result type for TypeScript</p>
+<p align="center">Minimal and ergonomic Result type for TypeScript</p>
 <div align="center">
 
 [![npm](https://img.shields.io/npm/v/@lppedd/mini-result?color=%23de1f1f&logo=npm)](https://www.npmjs.com/package/@lppedd/mini-result)

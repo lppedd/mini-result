@@ -1,7 +1,7 @@
 import type { Err } from "./err";
 import { Ok } from "./ok";
 import type { Result } from "./result";
-import { isResult, type NoResult } from "./utils";
+import { isResult, type RawValue } from "./utils";
 
 /**
  * Allows performing asynchronous operations on a {@link Result}.
@@ -37,7 +37,7 @@ export interface AsyncResult<V, E> {
    *
    * If this is an {@link Err} result, its error value is preserved unchanged.
    */
-  mapAsync<RV = V>(fn: (v: V) => NoResult<RV> | Promise<NoResult<RV>>): AsyncResult<RV, E>;
+  mapAsync<RV = V>(fn: (v: V) => RawValue<RV> | Promise<RawValue<RV>>): AsyncResult<RV, E>;
 
   /**
    * Invokes the `fnv` function with the success value if this is an async {@link Ok} result,
@@ -70,7 +70,7 @@ export interface AsyncResult<V, E> {
    *
    * If this is an async {@link Ok} result, its success value is preserved unchanged.
    */
-  catchAsync<RV = V>(fn: (e: E) => NoResult<RV> | Promise<NoResult<RV>>): AsyncResult<V | RV, E>;
+  catchAsync<RV = V>(fn: (e: E) => RawValue<RV> | Promise<RawValue<RV>>): AsyncResult<V | RV, E>;
 
   /**
    * Exhaustively handles both the async {@link Ok} and {@link Err} result variants.
@@ -118,7 +118,7 @@ export class AsyncResultImpl<V, E> implements AsyncResult<V, E> {
   mapAsync<RV = V>(fn: (v: V) => Ok<RV, E> | Promise<Ok<RV, E>>): AsyncResult<RV, E>;
   mapAsync<RE = E>(fn: (v: V) => Err<V, RE> | Promise<Err<V, RE>>): AsyncResult<V, E | RE>;
   mapAsync<RV = V, RE = E>(fn: (v: V) => Result<RV, RE> | Promise<Result<RV, RE>>): AsyncResult<RV, E | RE>;
-  mapAsync<RV = V>(fn: (v: V) => NoResult<RV> | Promise<NoResult<RV>>): AsyncResult<RV, E>;
+  mapAsync<RV = V>(fn: (v: V) => RawValue<RV> | Promise<RawValue<RV>>): AsyncResult<RV, E>;
   mapAsync<RV = V, RE = E>(
     fn: (v: V) => RV | Promise<RV> | Result<V | RV, E | RE> | Promise<Result<V | RV, E | RE>>,
   ): AsyncResult<V | RV, E | RE> {
@@ -136,7 +136,7 @@ export class AsyncResultImpl<V, E> implements AsyncResult<V, E> {
   catchAsync<RV = V>(fn: (e: E) => Ok<RV, E> | Promise<Ok<RV, E>>): AsyncResult<V | RV, E>;
   catchAsync<RE = E>(fn: (e: E) => Err<V, RE> | Promise<Err<V, RE>>): AsyncResult<V, RE>;
   catchAsync<RV = V, RE = E>(fn: (e: E) => Result<RV, RE> | Promise<Result<RV, RE>>): AsyncResult<V | RV, RE>;
-  catchAsync<RV = V>(fn: (e: E) => NoResult<RV> | Promise<NoResult<RV>>): AsyncResult<V | RV, E>;
+  catchAsync<RV = V>(fn: (e: E) => RawValue<RV> | Promise<RawValue<RV>>): AsyncResult<V | RV, E>;
   catchAsync<RV, RE>(
     fn: (e: E) => RV | Promise<RV> | Result<V | RV, E | RE> | Promise<Result<V | RV, E | RE>>,
   ): AsyncResult<V | RV, E | RE> {

@@ -1,7 +1,7 @@
 import { type Result, ResultSymbol } from "./result";
 
 // Helper type to ensure a raw return value is not 'RV | Result<RV, ...>'
-export type NoResult<T> = T extends Result<any, any> ? "Raw value cannot be a Result" : T;
+export type RawValue<T> = T extends Result<any, any> ? "Raw value cannot be a Result" : T;
 
 // Helper type to ensure the return value is not a Promise
 export type SyncValue<T> = T extends Promise<unknown> ? "Use Res.wrapAsync to wrap Promise results" : T;

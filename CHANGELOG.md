@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.0
+
+- Added JSDoc documentation for all `Res` factory functions.
+- Reverted compilation `target` to ES2022 to match the TypeScript `lib` configuration.
+- Improved various utility types for better readability.
+
 ## 0.5.1
 
 - Exported the `ResultPromise<V, E>` type as a convenience alias for `Promise<Result<V, E>>`.

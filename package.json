@@ -1,8 +1,8 @@
 {
   "name": "@lppedd/mini-result",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "license": "MIT",
-  "description": "Minimal Result type for TypeScript",
+  "description": "Minimal and ergonomic Result type for TypeScript",
   "author": "Edoardo Luppi <lp.edoardo@gmail.com>",
   "homepage": "https://github.com/lppedd/mini-result",
   "bugs": {
@@ -15,6 +15,7 @@
   "keywords": [
     "result",
     "minimal",
+    "ergonomic",
     "rust",
     "throw",
     "error",

@@ -12,7 +12,7 @@ import { isResult, type RawValue } from "./utils";
  */
 export class Ok<V, E> implements IResult<V, E> {
   /**
-   * The underlying success value, also returned when calling {@link Ok.unwrap|unwrap}.
+   * The underlying success value, also returned when calling {@link Ok.unwrap}.
    */
   readonly value: V;
 

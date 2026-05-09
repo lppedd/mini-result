@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "lib": ["ES2022"],
-    "target": "ES2015",
-    "module": "ES2015",
-    "moduleResolution": "Bundler",
+    "target": "es2022",
+    "module": "es2022",
+    "moduleResolution": "bundler",
     "strict": true,
     "stripInternal": true,
     "esModuleInterop": true,

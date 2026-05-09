@@ -2,7 +2,7 @@ import { type AsyncResult, AsyncResultImpl } from "./async";
 import { Err } from "./err";
 import { Ok } from "./ok";
 import type { Result } from "./result";
-import type { SyncValue } from "./utils";
+import type { RawValue, SyncValue } from "./utils";
 
 /**
  * A factory for creating and composing {@link Result|Results}.
@@ -89,7 +89,7 @@ export const Res = {
    * @param fn The synchronous or asynchronous function to execute.
    * @returns An {@link AsyncResult} containing either the resolved value or the captured error.
    */
-  wrapAsync: <V>(fn: () => Promise<V> | V): AsyncResult<V, unknown> =>
+  wrapAsync: <V>(fn: () => Promise<RawValue<V>> | RawValue<V>): AsyncResult<RawValue<V>, unknown> =>
     new AsyncResultImpl(
       Promise.resolve()
         .then(fn)

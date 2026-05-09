@@ -2,9 +2,7 @@ import { type AsyncResult, AsyncResultImpl } from "./async";
 import { Err } from "./err";
 import { Ok } from "./ok";
 import type { Result } from "./result";
-
-// Helper type to ensure the return value is not a Promise
-export type SyncValue<T> = T extends Promise<unknown> ? "Use Res.wrapAsync to wrap Promise results" : T;
+import type { SyncValue } from "./utils";
 
 /**
  * A factory for creating {@link Result} objects.

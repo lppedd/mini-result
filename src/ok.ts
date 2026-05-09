@@ -12,7 +12,7 @@ import { isResult, type NoResult } from "./utils";
  */
 export class Ok<V, E> implements IResult<V, E> {
   /**
-   * The underlying success value, also returned by {@link unwrap}.
+   * The underlying success value, also returned when calling {@link Ok.unwrap|unwrap}.
    */
   readonly value: V;
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.1
+
+- Relaxed parameter types of `Res.wrapAsync`.
+- Refactored internals to use JavaScript's private elements where appropriate.  
+  This is now possible because we are targeting ES2022.
+
 ## 0.6.0
 
 - Added JSDoc documentation for all `Res` factory functions.

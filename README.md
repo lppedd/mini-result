@@ -13,6 +13,11 @@
 
 </div>
 
+## Archived
+
+Please use [@praha/byethrow](https://github.com/praha-inc/byethrow) instead.  
+Unfortunately, `mini-result`'s design is flawed and a proper redesign would look exactly like `byethrow`.
+
 ## Design considerations
 
 **mini-result** is inspired by existing `Result`-type libraries such as:
